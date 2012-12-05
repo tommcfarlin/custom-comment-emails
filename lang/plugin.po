@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Custom Comment Emails\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-05 13:24-0500\n"
-"PO-Revision-Date: 2012-12-05 13:24-0500\n"
+"POT-Creation-Date: 2012-12-05 13:47-0500\n"
+"PO-Revision-Date: 2012-12-05 13:48-0500\n"
 "Last-Translator: Tom McFarlin <tom@tommcfarlin.com>\n"
 "Language-Team: Tom McFarlin <tom@tommcfarlin.com>\n"
 "Language: en_US\n"
@@ -16,14 +16,26 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../plugin.php:88
+#: ../plugin.php:95
 msgid "["
 msgstr ""
 
-#: ../plugin.php:88
+#: ../plugin.php:95
 msgid "]"
 msgstr ""
 
-#: ../plugin.php:90
-msgid "Hey There! Looks like you've got a new comment!"
+#: ../plugin.php:97
+msgid "Hey There - Looks like you've got a new comment!"
+msgstr ""
+
+#: ../plugin.php:126
+msgid "Comment For "
+msgstr ""
+
+#: ../plugin.php:132
+msgid "This is a "
+msgstr ""
+
+#: ../plugin.php:133
+msgid "By "
 msgstr ""

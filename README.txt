@@ -22,6 +22,10 @@ An example plugin developed to demonstrate how to create and style custom commen
 
 ## Changelog
 
+_0.3_
+
+* Customizing the body of the email
+
 _0.2_
 
 * Adding filters for both comment moderation *and* comment notification

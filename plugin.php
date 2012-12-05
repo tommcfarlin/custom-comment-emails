@@ -39,9 +39,20 @@ class Custom_Comment_Email {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'plugin_textdomain' ) );
 		
-		// Set the filters for the comment notification email
-		add_filter( 'comment_notification_headers', array( $this, 'email_headers' ) );
-		add_filter( 'comment_notification_subject', array( $this, 'email_subject' ) );
+		/* Set the filters for comment approval and the comment notification email.
+		 * For purposes of this example plugin, these will be the same email.
+		 * Though in a production environment, you'd naturally want to include the typical
+		 * 'Approve,' 'Spam,' and 'Trash' links.
+		 */
+		 
+		// Moderation
+		//add_filter( 'comment_notification_headers', array( $this, 'email_headers' ) );
+		add_filter( 'comment_moderation_subject', array( $this, 'email_subject' ), 10, 2 );
+		add_filter( 'comment_moderation_text', array( $this, 'email_text' ), 10, 2 );
+		
+		// Notifications
+		//add_filter( 'comment_notification_headers', array( $this, 'email_headers' ) );
+		add_filter( 'comment_notification_subject', array( $this, 'email_subject' ), 10, 2 );
 	    add_filter( 'comment_notification_text', array( $this, 'email_text' ), 10, 2 );
 
 	} // end constructor
@@ -80,14 +91,10 @@ class Custom_Comment_Email {
 	 */	
 	function email_subject( $subject, $comment_id ) {
     	
-    	// First, let's get the title of the post from the incoming comment ID
-    	$comment = get_comment( $comment_id );
-		$post_title = get_the_title( $comment->comment_post_ID );
-    	
-    	// Next, create the subject line
-    	$subject = __( "[", 'custom-comment-email-locale' ) . $post_title . __( "]", 'custom-comment-email-locale' );
-    	$subject .= "&nbsp;";
-    	$subject .=  __( "Hey There! Looks like you've got a new comment!", 'custom-comment-email-locale' );
+    	// Create the subject line in the following format: "[Post Title] Hey There - Looks like you've got a new comment!"
+    	$subject = __( "[", 'custom-comment-email-locale' ) . $this->get_post_title( $comment_id ) . __( "]", 'custom-comment-email-locale' );
+    	$subject .= " ";
+    	$subject .=  __( "Hey There - Looks like you've got a new comment!", 'custom-comment-email-locale' );
     	
     	return $subject;
     	
@@ -102,8 +109,51 @@ class Custom_Comment_Email {
 	 * @since 1.0
 	 */
 	function email_text( $message, $comment_id ) {
-    	// TODO
+
+    	// Retrieve the comment and the original message
+    	$comment = get_comment( $comment_id );
+    	    	
+    	// Setup the styles for the email
+    	$message = '<style type="text/css">';
+    		$message .= '#title { font-size 1.5em; font-family: "Open Sans", Helvetica, Arial, sans-serif; display: block; border-bottom: 1px solid #ededed; }';
+    		$message .= '#comment { width: 100%; }';
+    		$message .= '#footer { border-top: 1px solid #ededed; }';
+    		$message .= '#footer p { text-align: center; }';
+    	$message .= '</style>';
+    	
+    	// Define the header
+    	$message = '<h1 id="title">';
+    		$message .= __( 'Comment For ', 'custom-comment-locale');
+    		$message .= $this->get_post_title( $comment_id );
+    	$message .= '</h1><!-- /#title -->';
+    	
+    	// And set the footer
+    	$message .= '<div id="footer">';
+    		$message .= '<p>' . __( 'This is a ', 'custom-comment-email-locale' ) . $comment->comment_type . '.</p>';
+    		$message .= '<p>' . __( 'By ', 'custom-comment-email-locale' ) . '<a href="mailto:"' . $comment->comment_author_email . '">' . $comment->comment_author_email . '</a>.</p>';
+    	$message .= '</div><!-- /#footer -->';
+    	
+    	return $message;
+    	
 	} // end filter_method_name
+	
+	/*--------------------------------------------*
+	 * Helper Functions
+	 *--------------------------------------------*/
+	
+	/**
+	 * Retrieves the ID of the post associated with this comment.
+	 * 
+	 * @param	int		$comment_id	The ID of the comment that we're using to get the post title
+	 * @return	string				The title of the comment's post
+	 * @since	1.0
+	 */
+	private function get_post_title( $comment_id ) { 
+		
+    	$comment = get_comment( $comment_id );
+    	return get_the_title( $comment->comment_post_ID );
+		
+	} // end get_post_title
   
 } // end class
 
