@@ -22,6 +22,11 @@ An example plugin developed to demonstrate how to create and style custom commen
 
 ## Changelog
 
-_0.1 (4th December, 2012)_
+_0.2_
+
+* Adding filters for both comment moderation *and* comment notification
+* Defining the subject line filter
+
+_0.1_
 
 * Initial release of the skeleton of the plugin

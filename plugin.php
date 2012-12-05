@@ -79,7 +79,18 @@ class Custom_Comment_Email {
 	 * @since	1.0
 	 */	
 	function email_subject( $subject, $comment_id ) {
-    	// TODO
+    	
+    	// First, let's get the title of the post from the incoming comment ID
+    	$comment = get_comment( $comment_id );
+		$post_title = get_the_title( $comment->comment_post_ID );
+    	
+    	// Next, create the subject line
+    	$subject = __( "[", 'custom-comment-email-locale' ) . $post_title . __( "]", 'custom-comment-email-locale' );
+    	$subject .= "&nbsp;";
+    	$subject .=  __( "Hey There! Looks like you've got a new comment!", 'custom-comment-email-locale' );
+    	
+    	return $subject;
+    	
 	} // end filter_method_name
 
 	/**
