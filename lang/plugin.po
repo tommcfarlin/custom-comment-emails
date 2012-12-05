@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Custom Comment Emails\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-05 13:47-0500\n"
-"PO-Revision-Date: 2012-12-05 13:48-0500\n"
+"POT-Creation-Date: 2012-12-05 14:17-0500\n"
+"PO-Revision-Date: 2012-12-05 14:17-0500\n"
 "Last-Translator: Tom McFarlin <tom@tommcfarlin.com>\n"
 "Language-Team: Tom McFarlin <tom@tommcfarlin.com>\n"
 "Language: en_US\n"
@@ -28,14 +28,30 @@ msgstr ""
 msgid "Hey There - Looks like you've got a new comment!"
 msgstr ""
 
-#: ../plugin.php:126
+#: ../plugin.php:118
 msgid "Comment For "
 msgstr ""
 
-#: ../plugin.php:132
-msgid "This is a "
+#: ../plugin.php:123
+msgid "The original contents of this email read:"
 msgstr ""
 
-#: ../plugin.php:133
-msgid "By "
+#: ../plugin.php:128
+msgid "normal comment."
+msgstr ""
+
+#: ../plugin.php:130
+msgid "trackback or a pingback."
+msgstr ""
+
+#: ../plugin.php:135
+msgid "This comment was left by "
+msgstr ""
+
+#: ../plugin.php:136
+msgid " | "
+msgstr ""
+
+#: ../plugin.php:137
+msgid "This is a "
 msgstr ""

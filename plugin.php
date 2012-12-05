@@ -46,12 +46,12 @@ class Custom_Comment_Email {
 		 */
 		 
 		// Moderation
-		//add_filter( 'comment_notification_headers', array( $this, 'email_headers' ) );
+		add_filter( 'comment_moderation_headers', array( $this, 'email_headers' ) );
 		add_filter( 'comment_moderation_subject', array( $this, 'email_subject' ), 10, 2 );
 		add_filter( 'comment_moderation_text', array( $this, 'email_text' ), 10, 2 );
 		
 		// Notifications
-		//add_filter( 'comment_notification_headers', array( $this, 'email_headers' ) );
+		add_filter( 'comment_notification_headers', array( $this, 'email_headers' ) );
 		add_filter( 'comment_notification_subject', array( $this, 'email_subject' ), 10, 2 );
 	    add_filter( 'comment_notification_text', array( $this, 'email_text' ), 10, 2 );
 
@@ -78,7 +78,7 @@ class Custom_Comment_Email {
 	 * @since	1.0
 	 */
 	function email_headers() {
-    	// TODO
+    	add_filter( 'wp_mail_content_type', create_function( '', 'return "text/html";' ) );
 	} // end action_method_name
 
 	/**
@@ -110,28 +110,32 @@ class Custom_Comment_Email {
 	 */
 	function email_text( $message, $comment_id ) {
 
-    	// Retrieve the comment and the original message
+    	// Retrieve the comment
     	$comment = get_comment( $comment_id );
-    	    	
-    	// Setup the styles for the email
-    	$message = '<style type="text/css">';
-    		$message .= '#title { font-size 1.5em; font-family: "Open Sans", Helvetica, Arial, sans-serif; display: block; border-bottom: 1px solid #ededed; }';
-    		$message .= '#comment { width: 100%; }';
-    		$message .= '#footer { border-top: 1px solid #ededed; }';
-    		$message .= '#footer p { text-align: center; }';
-    	$message .= '</style>';
     	
     	// Define the header
-    	$message = '<h1 id="title">';
-    		$message .= __( 'Comment For ', 'custom-comment-locale');
+    	$message = '<h1 style="font-size 1.5em; display: block;">';
+    		$message .= __( 'Comment For ', 'custom-comment-email-locale' );
     		$message .= $this->get_post_title( $comment_id );
-    	$message .= '</h1><!-- /#title -->';
+    	$message .= '</h1>';
+    	
+    	$message .= '<div style="width: 100%; border-top: 1px solid #ededed;margin-bottom: 12px;">';
+    		$message .= '<h3>' . __( 'The original contents of this email read:', 'custom-comment-email-locale' ) . '</h3>';
+    		$message .= $comment->comment_content;
+    	$message .= '</div>';
+    	
+    	// Determine what type of comment this is:
+    	$comment_type = __( 'normal comment.', 'custom-comment-email-locale' );
+    	if( '' != $comment->comment_type ) {
+	    	$comment_type = __( 'trackback or a pingback.', 'custom-comment-email-locale' );
+    	} // end if
     	
     	// And set the footer
-    	$message .= '<div id="footer">';
-    		$message .= '<p>' . __( 'This is a ', 'custom-comment-email-locale' ) . $comment->comment_type . '.</p>';
-    		$message .= '<p>' . __( 'By ', 'custom-comment-email-locale' ) . '<a href="mailto:"' . $comment->comment_author_email . '">' . $comment->comment_author_email . '</a>.</p>';
-    	$message .= '</div><!-- /#footer -->';
+    	$message .= '<div style="background: #ededed; border-top: 1px solid #ededed;padding: 4px; text-align: center;">';
+			$message .= __( 'This comment was left by ', 'custom-comment-email-locale' ) . '<strong><a href="mailto:"' . $comment->comment_author_email . '">' . $comment->comment_author_email . '</a></strong>.';
+			$message .= __( ' | ', 'custom-comment-email-locale' );
+			$message .= __( 'This is a ', 'custom-comment-email-locale' ) . '<strong>' . $comment_type . '</strong>.';
+    	$message .= '</div>';
     	
     	return $message;
     	

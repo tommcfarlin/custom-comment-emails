@@ -22,6 +22,12 @@ An example plugin developed to demonstrate how to create and style custom commen
 
 ## Changelog
 
+_1.0_
+
+* Renaming `README.txt` to `README.md`
+* Adding the proper headers for the email
+* Moving the CSS to inline styles to support Gmail
+
 _0.3_
 
 * Customizing the body of the email
